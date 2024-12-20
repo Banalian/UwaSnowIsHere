@@ -9,7 +9,11 @@ vec2 rotOrigin = vec2(g_sprite_width/2, g_sprite_height/2);
 class Snowflake : Animation {
     vec2 position;
     float curXDir = 1;
+    float curYSpeed = 5;
     float curRotation = 0;
+
+    float targetXDir = curXDir;
+    float lerpFactor = 0.01f;
 
     // decay stuff: we want to randomly change the x direction of the snowflake, with a certain probability (to try and have a natural look)
     // (we'll check the g_dt and do some modulo operation to see if we should change the direction)
@@ -54,9 +58,10 @@ class Snowflake : Animation {
         ) {
             position.y = -50;
             position.x = Math::Rand(0, g_width);
+            curYSpeed = Math::Rand(3, 7);
         } else {
             //print("Snowflake position: " + position.x + ", " + position.y);
-            position.y += 5;
+            position.y += curYSpeed;
             position.x += curXDir;
             // add a bias: the faster we go, the more we should move to the side (based on current position)
             // so, if we're on the right of the screen, move faster right, and vice versa
@@ -72,9 +77,11 @@ class Snowflake : Animation {
 
         // decay stuff (approximate modulo since g_dt is a float)
         if (int(g_dt) % decay == 0) {
-            curXDir = Math::Rand(-1, 2) * Math::Rand(1, 3);
+            targetXDir = Math::Rand(-1, 2) * Math::Rand(0.1f, 3.f);
             decay = Math::Rand(1, 100);
         }
+
+        curXDir = Math::Lerp(curXDir, targetXDir, lerpFactor);
 
 
         UI::End();
