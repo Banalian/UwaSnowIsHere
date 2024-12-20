@@ -50,8 +50,6 @@ class Snowflake : Animation {
 
         drawlist.AddImage(g_atlas, position, vec2(g_sprite_width,g_sprite_height), color, curRotation, rotOrigin);
 
-        // Instead of this dvd like movement, we want to always go down and randomly shift left or right
-        
         if ( (position.y >= g_height - g_sprite_height )
             || (position.x >= g_width + 50)
             || (position.x <= -50)
@@ -63,7 +61,7 @@ class Snowflake : Animation {
             //print("Snowflake position: " + position.x + ", " + position.y);
             position.y += curYSpeed;
             position.x += curXDir;
-            // add a bias: the faster we go, the more we should move to the side (based on current position)
+            // adds a bias: the faster we go, the more we should move to the side (based on current position)
             // so, if we're on the right of the screen, move faster right, and vice versa
             float bias = 0;
             if (currentSpeed > 0) {

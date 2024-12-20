@@ -1,7 +1,6 @@
 array<Animation@> g_anims(150);
 uint g_animsSize = 150;
 uint g_animCount = 0;
-uint g_hardLimit = 1000;
 
 float g_dt = 0;
 int g_width;
@@ -28,7 +27,6 @@ void resetSnowflakes() {
 }
 
 void Render() {
-
     if (!UI::IsGameUIVisible()) return;
 
     auto playground = cast<CSmArenaClient>(GetApp().CurrentPlayground);
@@ -76,7 +74,6 @@ void Update(float dt) {
 }
 
 void Main() {
-    uint initialSnowflakeSize = 100;
     while(g_dt < 1) {
         yield();
     }
@@ -86,7 +83,7 @@ void Main() {
     }
 
     // add a snowflake every 1-3 seconds
-    while (true and g_animCount < g_hardLimit) {
+    while (true && (g_animCount < maxAmountOfSnowflakes)) {
         addSnowflake();
         sleep(Math::Rand(1000, 3000));
     }

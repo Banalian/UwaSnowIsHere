@@ -2,10 +2,9 @@
 name     = "Uwa Snow Is Here"
 author   = "Banalian"
 category = "Random"
-version  = "0.01"
-#siteid = 169
+version  = "0.0.1"
+siteid = 674
 
 
 [script]
 dependencies = [ "VehicleState" ]
-#optional_dependencies = [  ]
