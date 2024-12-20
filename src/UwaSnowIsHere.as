@@ -7,6 +7,8 @@ int g_width;
 int g_height;
 
 void addSnowflake() {
+    if (!UI::IsGameUIVisible()) return;
+
     if (g_animCount <= g_animsSize) {
         g_animsSize += 30;
         g_anims.Resize(g_animsSize);
@@ -77,7 +79,7 @@ void Main() {
     while(g_dt < 1) {
         yield();
     }
-    for (uint i = 0; i < initialSnowflakeSize; i++) {
+    while (g_animCount < initialSnowflakeSize) {
         addSnowflake();
         sleep(Math::Rand(100, 500));
     }
