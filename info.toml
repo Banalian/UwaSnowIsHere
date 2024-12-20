@@ -1,0 +1,11 @@
+[meta]
+name     = "Uwa Snow Is Here"
+author   = "Banalian"
+category = "Random"
+version  = "0.01"
+#siteid = 169
+
+
+[script]
+dependencies = [ "VehicleState" ]
+#optional_dependencies = [  ]
