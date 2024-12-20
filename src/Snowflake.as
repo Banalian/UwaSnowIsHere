@@ -8,7 +8,7 @@ vec2 rotOrigin = vec2(g_sprite_width/2, g_sprite_height/2);
 
 class Snowflake : Animation {
     vec2 position;
-    int curXDir = 1;
+    float curXDir = 1;
     float curRotation = 0;
 
     // decay stuff: we want to randomly change the x direction of the snowflake, with a certain probability (to try and have a natural look)
@@ -27,18 +27,10 @@ class Snowflake : Animation {
         curRotation = Math::Rand(0, 360);
     }
 
-    void generateColor() {
-        int r = Math::Rand(0, 256);
-        int g = Math::Rand(0, 256);
-        int b = Math::Rand(0, 256);
-        int a = 0xFF;
-        color = (r << 24) | (g << 16) | (b << 8) | (a);
-    }
-
     void Render() override {
         auto drawlist = UI::GetForegroundDrawList();
         auto state = VehicleState::ViewingPlayerState();
-        int currentSpeed = 0;
+        float currentSpeed = 0;
         if(state is null) {
             currentSpeed = 0;
         } else {
@@ -50,13 +42,17 @@ class Snowflake : Animation {
         int windowFlags = UI::WindowFlags::NoTitleBar | UI::WindowFlags::NoCollapse | UI::WindowFlags::AlwaysAutoResize | UI::WindowFlags::NoDocking | UI::WindowFlags::NoInputs;
         UI::Begin("Snowflake", windowFlags);
 
-        vec2 rotOrigin = vec2(g_sprite_width/2, g_sprite_height/2);
+        vec2 rotOrigin = vec2(g_sprite_width/2, g_sprite_height/2.f);
+
         drawlist.AddImage(g_atlas, position, vec2(g_sprite_width,g_sprite_height), color, curRotation, rotOrigin);
 
         // Instead of this dvd like movement, we want to always go down and randomly shift left or right
         
-        if (position.y >= g_height - g_sprite_height) {
-            position.y = -100;
+        if ( (position.y >= g_height - g_sprite_height )
+            || (position.x >= g_width + 50)
+            || (position.x <= -50)
+        ) {
+            position.y = -50;
             position.x = Math::Rand(0, g_width);
         } else {
             //print("Snowflake position: " + position.x + ", " + position.y);
@@ -64,7 +60,7 @@ class Snowflake : Animation {
             position.x += curXDir;
             // add a bias: the faster we go, the more we should move to the side (based on current position)
             // so, if we're on the right of the screen, move faster right, and vice versa
-            int bias = 0;
+            float bias = 0;
             if (currentSpeed > 0) {
                 bias = position.x > g_width / 2 ? 1 : -1;
                 bias *= currentSpeed / 100;

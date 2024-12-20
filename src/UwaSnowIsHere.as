@@ -1,7 +1,7 @@
 array<Animation@> g_anims(150);
 uint g_animsSize = 150;
 uint g_animCount = 0;
-
+uint g_hardLimit = 1000;
 
 float g_dt = 0;
 int g_width;
@@ -49,7 +49,18 @@ void Render() {
 
 }
 
-//void RenderMenu(){}
+void RenderMenu(){
+    if (UI::BeginMenu(Icons::SnowflakeO + " Uwa Snow Is Here")) {
+        if (UI::MenuItem("Reset Snowflakes")) {
+            resetSnowflakes();
+        }
+        if (UI::MenuItem("Add Snowflake")) {
+            addSnowflake();
+        }
+        UI::EndMenu();
+    }
+}
+
 
 void Update(float dt) {
     g_dt += dt;
@@ -75,7 +86,7 @@ void Main() {
     }
 
     // add a snowflake every 1-3 seconds
-    while (true) {
+    while (true and g_animCount < g_hardLimit) {
         addSnowflake();
         sleep(Math::Rand(1000, 3000));
     }
